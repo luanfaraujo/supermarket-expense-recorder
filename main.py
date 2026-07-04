@@ -21,8 +21,8 @@ logging.info("Environment variables loaded and client initialized")
 for file in os.listdir("images_to_process"):
     if file.endswith(".jpg"):
         nf_to_process = os.path.join("images_to_process", file)
-img = Image.open(nf_to_process)
-logging.info("Image loaded successfully")
+        img = Image.open(nf_to_process)
+        logging.info("Image loaded successfully")
 
 response = client.models.generate_content(
     model="gemini-2.5-flash",
@@ -38,4 +38,4 @@ logging.info("--- Token Usage Report ---")
 logging.info(f"Prompt (Input) Tokens: {usage.prompt_token_count}")
 logging.info(f"Candidates (Output) Tokens: {usage.candidates_token_count}")
 logging.info(f"Total Tokens Consumed: {usage.total_token_count}")
-logging.info("--------------------------\n")
+logging.info("--------------------------\n") # \n adds a blank line after the log entry, better readability
