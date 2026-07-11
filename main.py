@@ -52,14 +52,12 @@ iterations = len(response_list) // 2  # Calculate the number of iterations based
 current_item = 0  # Initialize a variable to keep track of the current item being processed
 
 # Populate the Google Sheet with the extracted data
-# TODO need to make this work for every item in the response, loop it somehow
 for i in range(iterations):
     col_a_values = worksheet.col_values(1) # find all rows w/ data in column A
     next_empty_row = len(col_a_values) + 1 # the next empty row is the length of filled rows + 1
     worksheet.update_acell(f"A{next_empty_row}", today)
     worksheet.update_acell(f"C{next_empty_row}", response_list[current_item])
     worksheet.update_acell(f"D{next_empty_row}", response_list[current_item + 1])
-    next_empty_row = next_empty_row + 1
     current_item = current_item + 2  # Move to the next item name in the response list
 
 # Extract token usage metadata and output to log, for control
