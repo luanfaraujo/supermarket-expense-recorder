@@ -27,19 +27,21 @@ logging.info("Environment variables loaded and client initialized")
 # Load sheet
 gsheet = gc.open("Monthly expenses tracking")
 worksheet = gsheet.get_worksheet(0)
+logging.info("Google Sheet loaded successfully")
 
 # Load images
 for file in os.listdir("images_to_process"):
-    if file.endswith(".jpg"):
+    if file.endswith(".jpg") or file.endswith(".png"):
         nf_to_process = os.path.join("images_to_process", file)
         img = Image.open(nf_to_process)
         logging.info("Image loaded successfully")
-        # implement delete the image after processing, but not now
+        # TODO implement delete the image after processing, but not now
 
 response = client.models.generate_content(
     model="gemini-2.5-flash",
     contents=[img, "De acordo com essa imagem de uma nota fiscal, me informe, apenas:"
-    "o nome do item que eu comprei e o valor total de cada um. Ignore peso, quantidade, e qualquer outro dado que não seja o nome do item e o valor total."
+    "o nome do item que eu comprei e o valor total de cada um."
+    "Ignore peso, quantidade, e qualquer outro dado que não seja o nome do item e o valor total."
     "Quanto ao preço, utilize ponto como separador decimal, e não vírgula."
     "Organize essa resposta com todos os dados em uma linha, separados por vírgula."]
 )
@@ -58,11 +60,14 @@ for i in range(iterations):
     worksheet.update_acell(f"A{next_empty_row}", today)
     worksheet.update_acell(f"C{next_empty_row}", response_list[current_item])
     worksheet.update_acell(f"D{next_empty_row}", response_list[current_item + 1])
-    current_item = current_item + 2  # Move to the next item name in the response list
+    current_item = current_item + 2 # Move to the next item name in the response list
+
+# TODO implement a way to standardize item names with database check
+# code outputs item name, check if it exist in DB - if yes, use it
+# if not ask user to confirm the name and add it to DB for future reference
 
 # Extract token usage metadata and output to log, for control
 usage = response.usage_metadata
-
 logging.info(f"Response generated successfully: {response.text}")
 logging.info("--- Token Usage Report ---")
 logging.info(f"Prompt (Input) Tokens: {usage.prompt_token_count}")
