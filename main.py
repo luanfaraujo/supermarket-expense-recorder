@@ -31,7 +31,7 @@ logging.info("Google Sheet loaded successfully")
 
 # Load images
 for file in os.listdir("images_to_process"):
-    if file.endswith(".jpg") or file.endswith(".png"):
+    if file.endswith(".jpeg") or file.endswith(".png"):
         nf_to_process = os.path.join("images_to_process", file)
         img = Image.open(nf_to_process)
         logging.info("Image loaded successfully")
