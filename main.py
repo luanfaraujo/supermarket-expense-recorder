@@ -30,9 +30,11 @@ worksheet = gsheet.get_worksheet(0)
 logging.info("Google Sheet loaded successfully")
 
 # Load images
-for file in os.listdir("images_to_process"):
-    if file.endswith(".jpeg") or file.endswith(".png"):
-        nf_to_process = os.path.join("images_to_process", file)
+accepted_formats = [".jpeg", ".png", ".jpg"]
+
+for file in os.listdir("G:\\Meu Drive\\Expense Tracking\\images_to_process"):
+    if file.endswith(tuple(accepted_formats)):
+        nf_to_process = os.path.join("G:\\Meu Drive\\Expense Tracking\\images_to_process", file)
         img = Image.open(nf_to_process)
         logging.info("Image loaded successfully")
         # TODO implement delete the image after processing, but not now
